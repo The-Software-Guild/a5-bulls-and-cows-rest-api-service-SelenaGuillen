@@ -111,7 +111,7 @@ public class ServiceImpl implements Service {
 
     @Override
     public List<Game> getAll() {
-        return null;
+        return gameDao.getAll();
     }
 
     @Override

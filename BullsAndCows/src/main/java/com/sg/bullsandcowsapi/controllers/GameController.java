@@ -1,6 +1,5 @@
 package com.sg.bullsandcowsapi.controllers;
 
-import com.sg.bullsandcowsapi.dao.GameDao;
 import com.sg.bullsandcowsapi.models.Game;
 import com.sg.bullsandcowsapi.models.Round;
 import com.sg.bullsandcowsapi.service.Service;
@@ -14,17 +13,15 @@ import java.util.List;
 @RequestMapping("/api/bullsandcows")
 public class GameController {
 
-    private final GameDao dao;
     private final Service service;
 
-    public GameController(GameDao dao, Service service) {
-        this.dao = dao;
+    public GameController(Service service) {
         this.service = service;
     }
 
     @GetMapping("/game")
     public List<Game> all() {
-        return dao.getAll();
+        return service.getAll();
     }
 
     @GetMapping("/rounds/{gameID}")
@@ -32,17 +29,10 @@ public class GameController {
         return service.getAllByGameID(gameID);
     }
 
-    //starts a game and generates a 4 digit number, sets correct status, and returns 201 created
-    //in controller w/ the id
-    @PostMapping("/game")
-    @ResponseStatus(value=HttpStatus.CREATED, reason="TESTING")
-    public Game create(@RequestBody Game game) {
-        return dao.add(game);
-    }
 
     @GetMapping("/game/{id}")
     public ResponseEntity<Game> getGameById(@PathVariable int id) {
-        Game result = dao.findById(id);
+        Game result = service.findGameByID(id);
         if (result == null) {
             return new ResponseEntity(null, HttpStatus.NOT_FOUND);
         }
@@ -64,7 +54,6 @@ public class GameController {
         round.setGameID(round.getGameID());
         round.setGame(service.findGameByID(round.getGameID()));
 
-        //set result
         return service.guess(round);
 
     }
