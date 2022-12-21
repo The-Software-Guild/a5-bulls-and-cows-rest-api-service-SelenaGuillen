@@ -4,23 +4,17 @@ import com.sg.bullsandcowsapi.dao.GameDao;
 import com.sg.bullsandcowsapi.dao.RoundDao;
 import com.sg.bullsandcowsapi.models.Game;
 import com.sg.bullsandcowsapi.models.Round;
-import org.apache.tomcat.jni.Time;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Repository;
 
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 @Repository
-@Profile("database") //change later b/c not really accurate
+@Profile("database")
 public class ServiceImpl implements Service {
 
     GameDao gameDao;
@@ -35,7 +29,7 @@ public class ServiceImpl implements Service {
     @Override
     public Game initializeGame(Game newGame) {
         newGame.setStatus("in progress");
-        newGame.setNumber(generateNumber());
+        newGame.setAnswer(generateNumber());
         gameDao.add(newGame);
 
         return newGame;
@@ -59,16 +53,36 @@ public class ServiceImpl implements Service {
 
     @Override
     public Round guess(Round round) {
-        round.setResult(getResult(round));
+        Game game = gameDao.findById(round.getGameID());
         round.setTimePlayed(Timestamp.valueOf(LocalDateTime.now()));
-        round.setGame(gameDao.findById(round.getGameID()));
+        round.setGame(game);
+        round.setResult(getResult(round, game));
+        gameDao.updateGame(game);
         return roundDao.add(round);
     }
 
-    //collect result
-    private String getResult(Round round) {
-        Game game = gameDao.findById(round.getGameID());
-        String winningNumber = game.getNumber();
+    @Override
+    public List<Game> getAll() {
+        return gameDao.getAll();
+    }
+
+    @Override
+    public List<Round> getAllByGameID(int gameID) {
+        for (Round r: roundDao.getAllByGameID(gameID)) {
+            r.setGame(gameDao.findById(gameID));
+        }
+        return roundDao.getAllByGameID(gameID);
+    }
+
+    @Override
+    public Game findGameByID(int id) {
+        return gameDao.findById(id);
+    }
+
+
+    //helper methods
+    private String getResult(Round round, Game game) {
+        String winningNumber = game.getAnswer();
         String playerGuess = round.getPlayerGuess();
 
         int[] resultArray = findMatches(winningNumber, playerGuess);
@@ -79,6 +93,8 @@ public class ServiceImpl implements Service {
         //switch status if the entire number matches
         if (exactMatches == 4) {
             game.setStatus("finished");
+        } else {
+            game.setStatus("in progress");
         }
         String result = "e:" + exactMatches + ":" + "p:" + partialMatches;
         return result;
@@ -107,32 +123,4 @@ public class ServiceImpl implements Service {
         }
         return result;
     }
-
-
-    @Override
-    public List<Game> getAll() {
-        return gameDao.getAll();
-    }
-
-    @Override
-    public List<Round> getAllByGameID(int gameID) {
-        return roundDao.getAllByGameID(gameID);
-    }
-
-    @Override
-    public Game findGameByID(int id) {
-        return gameDao.findById(id);
-    }
-
-    @Override
-    public List<Round> getById(int gameID) {
-        return null;
-    }
-
-    //when displaying a game, if a game is still in progress, user should not be able to see the answer
-    //ensure that the answer is a 4 digit number with no repeating numbers
-    //guesses should only be 4 digit numbers and must be positive
-
-
-
 }

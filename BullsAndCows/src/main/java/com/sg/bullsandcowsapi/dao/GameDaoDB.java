@@ -34,7 +34,7 @@ public class GameDaoDB implements GameDao {
                     Statement.RETURN_GENERATED_KEYS);
 
             statement.setString(1, game.getStatus());
-            statement.setString(2, game.getNumber());
+            statement.setString(2, game.getAnswer());
             return statement;
         }, keyHolder);
 
@@ -55,6 +55,15 @@ public class GameDaoDB implements GameDao {
         return jdbcTemplate.queryForObject(sql, new GameMapper(), id);
     }
 
+    @Override
+    public void updateGame(Game game) {
+        final String sql = "UPDATE Game SET "
+                + "Status = ?, "
+                + "Number = ? "
+                + "WHERE ID = ?;";
+        jdbcTemplate.update(sql, game.getStatus(), game.getAnswer(), game.getId());
+    }
+
     private static final class GameMapper implements RowMapper<Game> {
 
         @Override
@@ -62,7 +71,7 @@ public class GameDaoDB implements GameDao {
             Game game = new Game();
             game.setId(rs.getInt("ID"));
             game.setStatus(rs.getString("Status"));
-            game.setNumber(rs.getString("Number"));
+            game.setAnswer(rs.getString("Number"));
             return game;
         }
     }

@@ -9,6 +9,6 @@ public interface RoundDao {
 
     List<Round> getAll();
 
-    public List<Round> getAllByGameID(int gameID);
+    List<Round> getAllByGameID(int gameID);
 
 }

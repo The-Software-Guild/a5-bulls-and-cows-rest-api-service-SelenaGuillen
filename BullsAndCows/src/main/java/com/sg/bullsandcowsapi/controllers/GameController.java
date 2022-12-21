@@ -42,20 +42,13 @@ public class GameController {
     @PostMapping("/begin")
     @ResponseStatus(HttpStatus.CREATED)
     public Game initializeGame(Game game) {
-        //make sure to return the created w/ id
         return service.initializeGame(game);
     }
 
     @PostMapping("/guess")
     @ResponseStatus(HttpStatus.CREATED)
     public Round makeAGuess(@RequestBody Round round) {
-
-        round.setPlayerGuess(round.getPlayerGuess());
-        round.setGameID(round.getGameID());
-        round.setGame(service.findGameByID(round.getGameID()));
-
         return service.guess(round);
-
     }
 
 }

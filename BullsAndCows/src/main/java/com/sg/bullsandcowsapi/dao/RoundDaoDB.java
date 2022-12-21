@@ -1,6 +1,5 @@
 package com.sg.bullsandcowsapi.dao;
 
-import com.sg.bullsandcowsapi.models.Game;
 import com.sg.bullsandcowsapi.models.Round;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
@@ -10,7 +9,6 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -69,7 +67,6 @@ public class RoundDaoDB implements RoundDao{
             round.setPlayerGuess(rs.getString("PlayerGuess"));
             round.setResult(rs.getString("Result"));
             round.setGameID(rs.getInt("GameID"));
-            //round.setGame(rs.getObject("Game"));
             return round;
         }
     }

@@ -2,9 +2,7 @@ package com.sg.bullsandcowsapi.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import java.sql.Time;
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 
 public class Round {
     private int id;

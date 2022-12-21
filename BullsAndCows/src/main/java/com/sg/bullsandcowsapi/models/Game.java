@@ -3,11 +3,12 @@ package com.sg.bullsandcowsapi.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class Game {
+
     private int id;
     private String status;
 
     @JsonIgnore
-    private String number;
+    private String answer;
 
     public int getId() {
         return id;
@@ -25,11 +26,11 @@ public class Game {
         this.status = status;
     }
 
-    public String getNumber() {
-        return number;
+    public String getAnswer() {
+        return answer;
     }
 
-    public void setNumber(String number) {
-        this.number = number;
+    public void setAnswer(String answer) {
+        this.answer = answer;
     }
 }
