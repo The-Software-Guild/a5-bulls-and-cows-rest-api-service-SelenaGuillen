@@ -12,7 +12,7 @@ import java.sql.*;
 import java.util.List;
 
 @Repository
-@Profile("prod")
+@Profile({"prod", "test"})
 public class RoundDaoDB implements RoundDao{
 
     private JdbcTemplate jdbcTemplate;

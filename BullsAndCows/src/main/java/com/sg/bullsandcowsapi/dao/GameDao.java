@@ -12,4 +12,6 @@ public interface GameDao {
     Game findById(int id);
 
     void updateGame(Game game);
+
+    void deleteGameById(int id);
 }

@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 @Repository
-@Profile("prod")
+@Profile({"prod", "test"})
 public class ServiceImpl implements Service {
 
     GameDao gameDao;

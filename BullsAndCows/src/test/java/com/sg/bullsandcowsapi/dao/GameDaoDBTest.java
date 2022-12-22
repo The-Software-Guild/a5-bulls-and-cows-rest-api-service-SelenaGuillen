@@ -1,7 +1,7 @@
 package com.sg.bullsandcowsapi.dao;
 
 import com.sg.bullsandcowsapi.models.Game;
-import com.sg.bullsandcowsapi.service.Service;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,15 +21,18 @@ class GameDaoDBTest {
     @Autowired
     GameDao gameDao;
 
-    @Autowired
-    Service service;
-
-    @Autowired
-    RoundDao roundDao;
+//    @Autowired
+//    Service service;
+//
+//    @Autowired
+//    RoundDao roundDao;
 
     @BeforeEach
     public void setUp() {
-
+        List<Game> games = gameDao.getAll();
+        for (Game game: games) {
+            gameDao.deleteGameById(game.getId());
+        }
     }
     @Test
     void addGet() {
@@ -44,10 +47,22 @@ class GameDaoDBTest {
     }
 
     @Test
-    void findById() {
+    void getAll() {
+        Game game = new Game();
+        game.setAnswer("0987");
+        game.setStatus("finished");
+        gameDao.add(game);
+
+        Game game2 = new Game();
+        game.setAnswer("8900");
+        game.setStatus("in progress");
+        gameDao.add(game2);
+
+        List<Game> games = gameDao.getAll();
+
+        Assertions.assertEquals(2, games.size());
+        Assertions.assertTrue(games.contains(game));
+        Assertions.assertTrue(games.contains(game2));
     }
 
-    @Test
-    void updateGame() {
-    }
 }
