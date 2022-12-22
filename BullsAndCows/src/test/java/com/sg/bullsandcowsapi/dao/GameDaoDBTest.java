@@ -37,6 +37,7 @@ class GameDaoDBTest {
     @Test
     void addGet() {
         Game game = new Game();
+        game.setId(1);
         game.setStatus("in progress");
         game.setAnswer("1234");
 
@@ -49,11 +50,13 @@ class GameDaoDBTest {
     @Test
     void getAll() {
         Game game = new Game();
+        game.setId(1);
         game.setAnswer("0987");
         game.setStatus("finished");
         gameDao.add(game);
 
         Game game2 = new Game();
+        game.setId(2);
         game.setAnswer("8900");
         game.setStatus("in progress");
         gameDao.add(game2);

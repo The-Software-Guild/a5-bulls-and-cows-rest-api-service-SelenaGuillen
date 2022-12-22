@@ -12,7 +12,7 @@ import java.sql.*;
 import java.util.List;
 
 @Repository
-@Profile({"!prod & !test"})
+@Profile({"prod", "test"})
 public class GameDaoDB implements GameDao {
 
     private final JdbcTemplate jdbcTemplate;
@@ -66,7 +66,7 @@ public class GameDaoDB implements GameDao {
 
     @Override
     public void deleteGameById(int id) {
-        final String sql = "DELETE FROM Game WHERE id =?;";
+        final String sql = "DELETE FROM Game WHERE ID =?;";
         jdbcTemplate.update(sql, id);
     }
 
