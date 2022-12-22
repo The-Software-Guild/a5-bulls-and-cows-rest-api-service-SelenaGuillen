@@ -12,7 +12,7 @@ import java.sql.*;
 import java.util.List;
 
 @Repository
-@Profile("database")
+@Profile("prod")
 public class RoundDaoDB implements RoundDao{
 
     private JdbcTemplate jdbcTemplate;
@@ -45,11 +45,6 @@ public class RoundDaoDB implements RoundDao{
         return round;
     }
 
-    @Override
-    public List<Round> getAll() {
-        final String sql = "SELECT * FROM Round";
-        return jdbcTemplate.query(sql, new RoundMapper());
-    }
 
     @Override
     public List<Round> getAllByGameID(int gameID) {

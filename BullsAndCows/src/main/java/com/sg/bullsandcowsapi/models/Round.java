@@ -3,6 +3,7 @@ package com.sg.bullsandcowsapi.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.sql.Timestamp;
+import java.util.Objects;
 
 public class Round {
     private int id;
@@ -59,5 +60,31 @@ public class Round {
 
     public void setGame(Game game) {
         this.game = game;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Round round = (Round) o;
+
+        if (id != round.id) return false;
+        if (gameID != round.gameID) return false;
+        if (!Objects.equals(timePlayed, round.timePlayed)) return false;
+        if (!Objects.equals(playerGuess, round.playerGuess)) return false;
+        if (!Objects.equals(result, round.result)) return false;
+        return Objects.equals(game, round.game);
+    }
+
+    @Override
+    public int hashCode() {
+        int result1 = id;
+        result1 = 31 * result1 + (timePlayed != null ? timePlayed.hashCode() : 0);
+        result1 = 31 * result1 + (playerGuess != null ? playerGuess.hashCode() : 0);
+        result1 = 31 * result1 + (result != null ? result.hashCode() : 0);
+        result1 = 31 * result1 + gameID;
+        result1 = 31 * result1 + (game != null ? game.hashCode() : 0);
+        return result1;
     }
 }

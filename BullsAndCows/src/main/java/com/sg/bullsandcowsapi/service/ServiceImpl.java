@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 @Repository
-@Profile("database")
+@Profile("prod")
 public class ServiceImpl implements Service {
 
     GameDao gameDao;
@@ -34,22 +34,6 @@ public class ServiceImpl implements Service {
 
         return newGame;
     }
-
-    private String generateNumber() {
-        Random random = new Random();
-        Set<Integer> set = new HashSet<>();
-        while (set.size() < 4) {
-            set.add(random.nextInt(10));
-        }
-
-        StringBuilder sb = new StringBuilder();
-        for(int number: set) {
-            sb.append(number);
-        }
-
-        return sb.toString();
-    }
-
 
     @Override
     public Round guess(Round round) {
@@ -81,6 +65,21 @@ public class ServiceImpl implements Service {
 
 
     //helper methods
+    private String generateNumber() {
+        Random random = new Random();
+        Set<Integer> set = new HashSet<>();
+        while (set.size() < 4) {
+            set.add(random.nextInt(10));
+        }
+
+        StringBuilder sb = new StringBuilder();
+        for(int number: set) {
+            sb.append(number);
+        }
+
+        return sb.toString();
+    }
+
     private String getResult(Round round, Game game) {
         String winningNumber = game.getAnswer();
         String playerGuess = round.getPlayerGuess();

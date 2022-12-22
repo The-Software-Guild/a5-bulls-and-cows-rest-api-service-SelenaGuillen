@@ -12,7 +12,7 @@ import java.sql.*;
 import java.util.List;
 
 @Repository
-@Profile("database")
+@Profile("prod")
 public class GameDaoDB implements GameDao {
 
     private final JdbcTemplate jdbcTemplate;
